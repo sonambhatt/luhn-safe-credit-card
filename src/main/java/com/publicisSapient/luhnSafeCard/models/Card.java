@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Card {
-    private String id;
+    @Id private String id;
     private String name;
     private String number;
     private BigDecimal limit;
