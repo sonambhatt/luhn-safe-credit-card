@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publicisSapient.luhnSafeCard.models.Card;
+import com.publicisSapient.luhnSafeCard.models.CardRequestBody;
+import com.publicisSapient.luhnSafeCard.models.CardResponseBody;
 import com.publicisSapient.luhnSafeCard.services.CardService;
 
 @Controller
@@ -26,12 +28,13 @@ public class CardController {
     private final CardService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Card> registerCard(@RequestBody @Valid Card card) {
+    public ResponseEntity<CardResponseBody> registerCard(@RequestBody @Valid CardRequestBody card) {
+
         return ResponseEntity.status(HttpStatus.CREATED).body(service.register(card));
     }
 
     @GetMapping
-    public ResponseEntity<List<Card>> fetchCards() {
+    public ResponseEntity<List<CardResponseBody>> fetchCards() {
         return ResponseEntity.ok(service.getAll());
     }
 }

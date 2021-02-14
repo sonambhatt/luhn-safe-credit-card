@@ -9,6 +9,8 @@ import java.util.stream.StreamSupport;
 import org.springframework.stereotype.Service;
 
 import com.publicisSapient.luhnSafeCard.models.Card;
+import com.publicisSapient.luhnSafeCard.models.CardRequestBody;
+import com.publicisSapient.luhnSafeCard.models.CardResponseBody;
 import com.publicisSapient.luhnSafeCard.repositories.CardRepository;
 import com.publicisSapient.luhnSafeCard.utils.CardValidator;
 
@@ -19,13 +21,17 @@ public class CardService {
     private final CardRepository repository;
     private final CardValidator validator;
 
-    public Card register(Card card) {
+    public CardResponseBody register(CardRequestBody cardRequestBody) {
+        Card card = new Card(cardRequestBody);
         validator.performBasicValidation(card);
         validator.performLuhnValidation(card);
-        return repository.save(card);
+
+        Card savedCard = repository.save(card);
+
+        return new CardResponseBody(savedCard);
     }
 
-    public List<Card> getAll() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false).collect(Collectors.toList());
+    public List<CardResponseBody> getAll() {
+        return StreamSupport.stream(repository.findAll().spliterator(), false).map(CardResponseBody::new).collect(Collectors.toList());
     }
 }

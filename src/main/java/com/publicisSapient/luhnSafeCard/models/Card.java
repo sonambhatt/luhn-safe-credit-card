@@ -24,4 +24,10 @@ public class Card {
     private String name;
     private String number;
     private BigDecimal credit;
+
+    public Card(CardRequestBody cardRequestBody) {
+        this.setName(cardRequestBody.getName());
+        this.setNumber(cardRequestBody.getNumber());
+        this.setCredit(BigDecimal.ZERO);
+    }
 }

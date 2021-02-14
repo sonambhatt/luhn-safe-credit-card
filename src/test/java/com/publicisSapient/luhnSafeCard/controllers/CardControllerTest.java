@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publicisSapient.luhnSafeCard.models.Card;
+import com.publicisSapient.luhnSafeCard.models.CardRequestBody;
+import com.publicisSapient.luhnSafeCard.models.CardResponseBody;
 import com.publicisSapient.luhnSafeCard.services.CardService;
 import com.sun.tools.javac.util.List;
 
@@ -42,25 +44,26 @@ class CardControllerTest {
     @Test
     @SneakyThrows
     void shouldRegisterCard() {
-        Card card = new Card("", "randomName","randomNumber", BigDecimal.ZERO);
-        Mockito.when(service.register(eq(card))).thenReturn(card);
+        CardRequestBody cardRequestBody = new CardRequestBody("randomName","randomNumber");
+        CardResponseBody cardResponseBody = new CardResponseBody(new Card(cardRequestBody));
+        Mockito.when(service.register(eq(cardRequestBody))).thenReturn(cardResponseBody);
 
         this.mockMvc.perform(post("/cards")
             .contentType(APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(card))
+            .content(objectMapper.writeValueAsString(cardResponseBody))
             .characterEncoding("utf-8"))
             .andExpect(status().isCreated())
             .andExpect(content().contentType(APPLICATION_JSON_VALUE))
-            .andExpect(content().json(objectMapper.writeValueAsString(card)))
+            .andExpect(content().json(objectMapper.writeValueAsString(cardResponseBody)))
             .andReturn();
     }
 
     @Test
     @SneakyThrows
     void shouldFetchAllCards() {
-        Card firstCard = new Card("", "firstRandomName","firstRandomNumber", BigDecimal.ZERO);
-        Card secondCard = new Card("", "secondRandomName","secondRandomNumber", BigDecimal.ZERO);
-        List<Card> allCards = List.of(firstCard, secondCard);
+        CardResponseBody firstCard = new CardResponseBody(new Card("", "firstRandomName","firstRandomNumber", BigDecimal.ZERO));
+        CardResponseBody secondCard = new CardResponseBody(new Card("", "secondRandomName","secondRandomNumber", BigDecimal.ZERO));
+        List<CardResponseBody> allCards = List.of(firstCard, secondCard);
 
         Mockito.when(service.getAll()).thenReturn(allCards);
 
