@@ -16,8 +16,8 @@ class LuhnCardValidatorTest {
     void shouldValidateCards() {
         Card card = new Card();
         card.setNumber("79927398713");
-        assertDoesNotThrow(() -> validator.validate(card));
+        assertDoesNotThrow(() -> validator.performLuhnValidation(card));
         card.setNumber("79927398710");
-        assertThrows(InvalidCardException.class, () -> validator.validate(card));
+        assertThrows(InvalidCardException.class, () -> validator.performLuhnValidation(card));
     }
 }

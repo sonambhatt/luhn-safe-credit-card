@@ -32,7 +32,8 @@ class CardServiceTest {
         Mockito.when(repository.save(card)).thenReturn(registeredCard);
 
         assertEquals(registeredCard, service.register(card));
-        Mockito.verify(validator).validate(card);
+        Mockito.verify(validator).performBasicValidation(card);
+        Mockito.verify(validator).performLuhnValidation(card);
     }
 
     @Test

@@ -14,16 +14,16 @@ public class LuhnCardValidator implements CardValidator {
 
 
     @Override
-    public void validate(Card card) {
-        if (!isValidCreditCardSequence(card.getNumber())) {
-            throw new InvalidCardException(String.format("Card sequence %s is not valid", card.getNumber()));
+    public void performLuhnValidation(Card card) {
+        if (!isValidCreditCardNumber(card.getNumber())) {
+            throw new InvalidCardException(String.format("Card number %s is not Luhn safe", card.getNumber()));
         }
     }
 
-    public boolean isValidCreditCardSequence(String cardSequence) {
+    public boolean isValidCreditCardNumber(String cardNumber) {
 
         List<Integer> cardDigits =
-            cardSequence.chars().map(Character::getNumericValue).boxed().collect(Collectors.toList());
+            cardNumber.chars().map(Character::getNumericValue).boxed().collect(Collectors.toList());
 
         for (int index = cardDigits.size() - 2; index >= 0; index -= 2) {
             int num = 2 * cardDigits.get(index);

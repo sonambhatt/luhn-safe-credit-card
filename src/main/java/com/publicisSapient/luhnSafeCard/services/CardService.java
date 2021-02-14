@@ -20,7 +20,8 @@ public class CardService {
     private final CardValidator validator;
 
     public Card register(Card card) {
-        validator.validate(card);
+        validator.performBasicValidation(card);
+        validator.performLuhnValidation(card);
         return repository.save(card);
     }
 
