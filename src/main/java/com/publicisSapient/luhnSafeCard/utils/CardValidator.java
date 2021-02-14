@@ -16,6 +16,6 @@ public interface CardValidator {
 
         if (card.getNumber().length() > CARD_NUMBER_LENGTH_LIMIT_MAX) throw new InvalidCardException("Card number cannot be longer than 19 characters");
 
-        if (card.getNumber().chars().anyMatch(Character::isDigit)) throw new InvalidCardException("Card number must contain only digits");
+        if (!(card.getNumber().chars().allMatch(Character::isDigit))) throw new InvalidCardException("Card number must contain only digits");
     }
 }
